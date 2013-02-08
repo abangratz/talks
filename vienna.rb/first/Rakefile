@@ -1,0 +1,23 @@
+desc "Compile the tex files to dvi"
+task :compile do
+  sh "latex talk.tex"
+  sh "latex talk.tex"
+end
+
+desc "Convert the dvi to ps file"
+task :dvips => :compile do
+  sh "dvips talk.dvi"
+  sh "dvips talk.dvi"
+end
+
+desc "Convert the ps to pdf file"
+task :pstopdf => :dvips do
+  sh "ps2pdf talk.ps"
+end
+
+desc "Clean the directory" 
+task :clean do
+  sh "rm *.toc *.ps *.aux *.dvi *.pdf *.log *.bm "
+end
+
+task :default => :pstopdf

@@ -1,0 +1,68 @@
+\documentclass[style=husky,display=slides,clock]{powerdot}
+\usepackage{courier}
+\usepackage{xcolor}
+\usepackage{listings}
+\title{Bag o' Tricks: Unit Testing}
+\author{Anton Bangratz\\
+	\url{https://abangratz.github.com/}\\
+	\url{@tony_xpro}\\
+\url{anton.bangratz@radarservices.com}}
+\date{2012-01-18}
+
+\begin{document}
+
+\lstset{
+	language=Ruby,
+	identifierstyle=\color{red},
+	commentstyle=\color{gray},
+	keywordstyle=\color{blue},
+	stringstyle=\color{orange},
+	basicstyle=\ttfamily\tiny\color{black},
+}
+\maketitle
+\section{Frameworks}
+\begin{slide}{Minitest}
+	\onslide*{1}{
+		\begin{itemize}
+			\item
+		\end{itemize}
+	}
+	\onslide*{2}{
+		\begin{lstlisting}[frame=shadowbox]^^J
+		class Test < Object^^J
+		\ \ def X(y)^^J
+		\ \ end^^J
+		end^^J
+		puts "Hello World"^^J
+	\end{lstlisting}
+	}
+\end{slide}
+\begin{slide}{RSpec}
+\end{slide}
+\begin{slide}{Mix and Match}
+	%http://myronmars.to/n/dev-blog/2012/07/mixing-and-matching-parts-of-rspec
+\end{slide}
+\section{Not (only) Rails}
+\begin{slide}{One Method, One Purpose}
+\end{slide}
+\begin{slide}{One Test, One Assertion}
+\end{slide}
+\begin{slide}{Mocking and Stubbing}
+\end{slide}
+\begin{slide}{Testing Modules}
+\end{slide}
+\begin{slide}{Testing IO}
+\end{slide}
+\section{Well, Rails}
+\begin{slide}{Anonymous Controllers}
+\end{slide}
+\begin{slide}{Testing Models?}
+\end{slide}
+\begin{slide}{Another Layer}
+\end{slide}
+\section{TDD}
+\begin{slide}{How To?}
+\end{slide}
+\begin{slide}{Advantages}
+\end{slide}
+\end{document}
