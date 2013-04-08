@@ -1,9 +1,9 @@
-\documentclass[style=husky,display=slides,clock]{powerdot}
+\documentclass[style=paintings,palette=Charon,display=slides,clock]{powerdot}
 \usepackage{courier}
 \usepackage{xcolor}
 \usepackage{listings}
 \title{Bag o' Tricks: Unit Testing}
-\author{Anton Bangratz\\
+\author{Anton 'tony' Bangratz\\
 	\url{https://abangratz.github.com/}\\
 	\url{@tony_xpro}\\
 \url{anton.bangratz@radarservices.com}}
@@ -20,30 +20,178 @@
 	basicstyle=\ttfamily\tiny\color{black},
 }
 \maketitle
-\section{Frameworks}
-\begin{slide}{Minitest}
-	\onslide*{1}{
-		\begin{itemize}
-			\item
-		\end{itemize}
-	}
-	\onslide*{2}{
-		\begin{lstlisting}[frame=shadowbox]^^J
-		class Test < Object^^J
-		\ \ def X(y)^^J
-		\ \ end^^J
-		end^^J
-		puts "Hello World"^^J
-	\end{lstlisting}
-	}
+\section{Introduction}
+\begin{slide}{Tony}
+	\vspace{\stretch{1}}
+	\begin{center}
+		\Huge About me
+	\end{center}
+	\vspace{\stretch{1}}
 \end{slide}
-\begin{slide}{RSpec}
+\begin{note}{Aboutme}
+			Ruby Developer
+			XP Enthusiast
+			Senior Developer at RadarServices
+	Almost 2 centuries of experience; programming language agnostic, but like Ruby a lot. 
+
+	Trying to convince people that automated Testing are a Good Thing since early 2000s
+\end{note}
+\begin{slide}{Testing}
+	\vspace{\stretch{1}}
+	\begin{center}
+		\onslide*{1} {\Huge What?}
+		\onslide*{2} {\Huge Test Automation}
+	\end{center}
+	\vspace{\stretch{1}}
 \end{slide}
-\begin{slide}{Mix and Match}
-	%http://myronmars.to/n/dev-blog/2012/07/mixing-and-matching-parts-of-rspec
+\begin{note}{Testing}
+	- Ask who is testing, automates, does TDD, CI, ...
+	Tell about: Unit Testing, Integration testing
+
+	Test Automation and CI/CD
+\end{note}
+\begin{slide}{The Art of Testing}
+	\begin{itemize}[type=1]
+		\item Unit Testing\pause
+		\item Integration Testing\pause
+		\item Continuous Integration/Deployment
+	\end{itemize}
 \end{slide}
+
+% \section{Frameworks}
+% \begin{slide}{Minitest}
+% 	\begin{itemize}[type=1]
+% 		\item Part of the Standard Library\pause
+% 		\item Pure Ruby\pause
+% 		\item Smaller, faster startup (than i.e. RSpec)\pause
+% 	\end{itemize}
+% \end{slide}
+% \begin{slide}{Minitest Example}
+% 	\begin{lstlisting}[frame=shadowbox]^^J
+% 		class Subject^^J
+% 		\ \ def will_it_blend?^^J
+% 		\ \ \ \ "YES!"^^J
+% 		\ \ end^^J
+% 		end^^J
+% 		^^J
+% 		...^^J
+% 		^^J	
+% 		class Test < MiniTest::Unit::TestCase^^J
+% 		\ \ def setup^^J
+% 		\ \ \ \ @subject = Subject.new^^J
+% 		\ \ end^^J
+% 		\ \ def test_that_it_will_blend^^J
+% 		\ \ \ \ assert_equal("YES!", @subject.will_it_blend?)^^J
+% 		\ \ end^^J
+% 		end^^J
+% 	\end{lstlisting}
+% \end{slide}
+% \begin{slide}{RSpec}
+% 	\begin{itemize}
+% 		\item
+% 	\end{itemize}
+% \end{slide}
+% \begin{slide}{RSpec example}
+% \end{slide}
+% \begin{slide}{Mix and Match}
+% 	%http://myronmars.to/n/dev-blog/2012/07/mixing-and-matching-parts-of-rspec
+% \end{slide}
 \section{Not (only) Rails}
 \begin{slide}{One Method, One Purpose}
+	\onslide*{1}{
+		Consider:
+		\begin{lstlisting}[frame=shadowbox]^^J
+		class TitanClass^^J
+		\ \ .^^J
+		\ \ .^^J
+		\ \ .^^J
+		\ \ def doIt(*args)^^J
+		\ \ \ \ args[:external_sources].each do |source|^^J
+		\ \ \ \ \ \ args[:data_gatherers] do |gatherer| ^^J
+		\ \ \ \ \ \ \ \ gatherer.doIt(source)^^J
+		\ \ \ \ \ \ end^^J
+		\ \ \ \ end^^J
+		\ \ \ \ processed_data = []^^J
+		\ \ \ \ current_gatherers.each do |gatherer|^^J
+		\ \ \ \ \ \ processed_data << process_data(gatherer)^^J
+		\ \ \ \ end^^J
+		\ \ \ \ reports = \{\}^^J
+		\ \ \ \ processed_data.each do |data|^^J
+		\ \ \ \ \ \ reports[data.id] = Report.new(data)^^J
+		\ \ \ \ end^^J
+		\ \ \ \ ReportPrinter.print_all(reports)^^J
+		\ \ end^^J
+		end^^J
+		\end{lstlisting}
+	This is a contrived example. The one I modelled that from is worse. By far.
+	}
+	\onslide*{2}{
+		Test:
+		\begin{lstlisting}[frame=shadowbox]^^J
+		require 'spec_helper'^^J
+		^^J
+		describe TitanClass do^^J
+		\ \ it "should do everything" do^^J
+		\ \ \ \ source = double(Source)^^J
+		\ \ \ \ gatherer = double(Gatherer)^^J
+		\ \ \ \ args = \{external_sources: [source], data_gatherers: [gatherer]\}^^J
+		\ \ \ \ processed = double("ProcessedData")^^J
+		\ \ \ \ subject.should_receive(process_data).with(gatherer).and_return(processed)^^J
+		\ \ \ \ report = double(Report)^^J
+		\ \ \ \ Report.should_receive(:new).with(processed)and_return(report)^^J
+		\ \ \ \ ReportPrinter.should_receive(:print_all).with([report])^^J
+		\ \ end^^J
+		end^^J
+		\end{lstlisting}
+	}
+	\onslide*{3}{
+		Test:
+		\begin{lstlisting}[frame=shadowbox]^^J
+		require 'spec_helper'^^J
+		^^J
+		describe TitanClass do^^J
+		\ \ it "should do everything" do^^J
+		\ \ \ \ source = double(Source)^^J
+		\ \ \ \ gatherer = double(Gatherer)^^J
+		\ \ \ \ args = \{external_sources: [source], data_gatherers: [gatherer]\}^^J
+		\ \ \ \ processed = double("ProcessedData")^^J
+		\ \ \ \ subject.should_receive(process_data).with(gatherer).and_return(processed)^^J
+		\ \ \ \ # Yikes, a stub on the subject under test!^^J
+		\ \ \ \ report = double(Report)^^J
+		\ \ \ \ Report.should_receive(:new).with(processed)and_return(report)^^J
+		\ \ \ \ # Stubbing ".new" is rarely a good idea^^J
+		\ \ \ \ ReportPrinter.should_receive(:print_all).with([report])^^J
+		\ \ \ \ # Huh. We know that a ReportPrinter prints reports, but that's^^J
+		\ \ \ \ # more than we actually should know ...^^J
+		\ \ end^^J
+		end^^J
+		\end{lstlisting}
+	}
+	\onslide*{4}{
+		Test:
+		\begin{lstlisting}[frame=shadowbox]^^J
+		require 'spec_helper'^^J
+		^^J
+		describe TitanClass do^^J
+		\ \ it "should do everything" do^^J
+		\ \ \ \ source = double(Source)^^J
+		\ \ \ \ gatherer = double(Gatherer)^^J
+		\ \ \ \ args = \{external_sources: [source], data_gatherers: [gatherer]\}^^J
+		\ \ \ \ processed = double("ProcessedData")^^J
+		\ \ \ \ subject.should_receive(process_data).with(gatherer).and_return(processed)^^J
+		\ \ \ \ # Yikes, a stub on the subject under test!^^J
+		\ \ \ \ report = double(Report)^^J
+		\ \ \ \ Report.should_receive(:new).with(processed)and_return(report)^^J
+		\ \ \ \ # Stubbing ".new" is rarely a good idea^^J
+		\ \ \ \ ReportPrinter.should_receive(:print_all).with([report])^^J
+		\ \ \ \ # Huh. We know that a ReportPrinter prints reports, but that's^^J
+		\ \ \ \ # more than we actually should know ...^^J
+		\ \ end^^J
+		end^^J
+		\end{lstlisting}
+		Let's clean up this mess, step by step ...
+	}
+
 \end{slide}
 \begin{slide}{One Test, One Assertion}
 \end{slide}
