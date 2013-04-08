@@ -1,7 +1,7 @@
 desc "Compile the tex files to dvi"
 task :compile do
-  sh "latex talk.tex"
-  sh "latex talk.tex"
+  sh "latex --shell-escape talk.tex"
+  sh "latex --shell-escape talk.tex"
 end
 
 desc "Convert the dvi to ps file"

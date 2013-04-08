@@ -1,4 +1,8 @@
-\documentclass[style=paintings,palette=Charon,display=slides,clock]{powerdot}
+\documentclass[style=paintings,display=slidesnotes,clock]{powerdot}
+\pdsetup{
+	palette=Charon
+}
+\usepackage[utf8]{inputenc}
 \usepackage{courier}
 \usepackage{xcolor}
 \usepackage{listings}
@@ -13,90 +17,46 @@
 
 \lstset{
 	language=Ruby,
-	identifierstyle=\color{red},
 	commentstyle=\color{gray},
-	keywordstyle=\color{blue},
+	keywordstyle=\color{yellow},
 	stringstyle=\color{orange},
-	basicstyle=\ttfamily\tiny\color{black},
+	basicstyle=\ttfamily\footnotesize\color{white},
 }
 \maketitle
 \section{Introduction}
-\begin{slide}{Tony}
-	\vspace{\stretch{1}}
-	\begin{center}
-		\Huge About me
-	\end{center}
-	\vspace{\stretch{1}}
-\end{slide}
-\begin{note}{Aboutme}
-			Ruby Developer
-			XP Enthusiast
-			Senior Developer at RadarServices
-	Almost 2 centuries of experience; programming language agnostic, but like Ruby a lot. 
-
-	Trying to convince people that automated Testing are a Good Thing since early 2000s
-\end{note}
-\begin{slide}{Testing}
-	\vspace{\stretch{1}}
-	\begin{center}
-		\onslide*{1} {\Huge What?}
-		\onslide*{2} {\Huge Test Automation}
-	\end{center}
-	\vspace{\stretch{1}}
-\end{slide}
-\begin{note}{Testing}
-	- Ask who is testing, automates, does TDD, CI, ...
-	Tell about: Unit Testing, Integration testing
-
-	Test Automation and CI/CD
-\end{note}
-\begin{slide}{The Art of Testing}
-	\begin{itemize}[type=1]
-		\item Unit Testing\pause
-		\item Integration Testing\pause
-		\item Continuous Integration/Deployment
+\begin{note}{About me}
+	\begin{itemize}
+		\item Ruby Developer
+		\item XP Enthusiast
+		\item Senior Developer at RadarServices
+		\item Almost 2 centuries of experience; programming language agnostic, but like Ruby a lot. 
+		\item Trying to convince people that automated Testing are a Good Thing since early 2000s
 	\end{itemize}
-\end{slide}
+\end{note}
+\section{The Art of Testing}
+\begin{note}{Testing}
+	\begin{itemize}
+		\item - Ask who is testing, automates, does TDD, CI, ...
+		\item Tell about: Unit Testing, Integration testing
+		\item Test Automation and CI/CD
+	\end{itemize}
+\end{note}
 
-% \section{Frameworks}
-% \begin{slide}{Minitest}
-% 	\begin{itemize}[type=1]
-% 		\item Part of the Standard Library\pause
-% 		\item Pure Ruby\pause
-% 		\item Smaller, faster startup (than i.e. RSpec)\pause
-% 	\end{itemize}
-% \end{slide}
-% \begin{slide}{Minitest Example}
-% 	\begin{lstlisting}[frame=shadowbox]^^J
-% 		class Subject^^J
-% 		\ \ def will_it_blend?^^J
-% 		\ \ \ \ "YES!"^^J
-% 		\ \ end^^J
-% 		end^^J
-% 		^^J
-% 		...^^J
-% 		^^J	
-% 		class Test < MiniTest::Unit::TestCase^^J
-% 		\ \ def setup^^J
-% 		\ \ \ \ @subject = Subject.new^^J
-% 		\ \ end^^J
-% 		\ \ def test_that_it_will_blend^^J
-% 		\ \ \ \ assert_equal("YES!", @subject.will_it_blend?)^^J
-% 		\ \ end^^J
-% 		end^^J
-% 	\end{lstlisting}
-% \end{slide}
-% \begin{slide}{RSpec}
-% 	\begin{itemize}
-% 		\item
-% 	\end{itemize}
-% \end{slide}
-% \begin{slide}{RSpec example}
-% \end{slide}
-% \begin{slide}{Mix and Match}
-% 	%http://myronmars.to/n/dev-blog/2012/07/mixing-and-matching-parts-of-rspec
-% \end{slide}
 \section{Not (only) Rails}
+\begin{note}{Not Rails}
+	\begin{itemize}
+		\item Ruby is more than Rails
+		\item Testing should be done anyways
+		\item Challenges: FS, IO, visuals
+		\item Can use RSpec, MiniTest
+		\item Examples use RSpec
+		\item Rules:
+			\begin{itemize}
+				\item One Method, One Purpose
+				\item One Test, One Assertion
+			\end{itemize}
+	\end{itemize}
+\end{note}
 \begin{slide}{One Method, One Purpose}
 	\onslide*{1}{
 		Consider:
@@ -134,12 +94,16 @@
 		\ \ it "should do everything" do^^J
 		\ \ \ \ source = double(Source)^^J
 		\ \ \ \ gatherer = double(Gatherer)^^J
-		\ \ \ \ args = \{external_sources: [source], data_gatherers: [gatherer]\}^^J
+		\ \ \ \ args = \{external_sources: [source],^^J
+		\ \ \ \ \ \ data_gatherers: [gatherer]\}^^J
 		\ \ \ \ processed = double("ProcessedData")^^J
-		\ \ \ \ subject.should_receive(process_data).with(gatherer).and_return(processed)^^J
+		\ \ \ \ subject.should_receive(process_data)^^J
+		\ \ \ \ \ \ .with(gatherer).and_return(processed)^^J
 		\ \ \ \ report = double(Report)^^J
-		\ \ \ \ Report.should_receive(:new).with(processed)and_return(report)^^J
+		\ \ \ \ Report.should_receive(:new).with(processed).^^J
+		\ \ \ \ \ \ and_return(report)^^J
 		\ \ \ \ ReportPrinter.should_receive(:print_all).with([report])^^J
+		\ \ \ \ subject.doIt(args)^^J
 		\ \ end^^J
 		end^^J
 		\end{lstlisting}
@@ -153,39 +117,20 @@
 		\ \ it "should do everything" do^^J
 		\ \ \ \ source = double(Source)^^J
 		\ \ \ \ gatherer = double(Gatherer)^^J
-		\ \ \ \ args = \{external_sources: [source], data_gatherers: [gatherer]\}^^J
+		\ \ \ \ args = \{external_sources: [source],^^J
+		\ \ \ \ \ \ data_gatherers: [gatherer]\}^^J
 		\ \ \ \ processed = double("ProcessedData")^^J
-		\ \ \ \ subject.should_receive(process_data).with(gatherer).and_return(processed)^^J
+		\ \ \ \ subject.should_receive(process_data)^^J
+		\ \ \ \ \ \ .with(gatherer).and_return(processed)^^J
 		\ \ \ \ # Yikes, a stub on the subject under test!^^J
 		\ \ \ \ report = double(Report)^^J
-		\ \ \ \ Report.should_receive(:new).with(processed)and_return(report)^^J
+		\ \ \ \ Report.should_receive(:new).with(processed).^^J
+		\ \ \ \ \ \ and_return(report)^^J
 		\ \ \ \ # Stubbing ".new" is rarely a good idea^^J
 		\ \ \ \ ReportPrinter.should_receive(:print_all).with([report])^^J
-		\ \ \ \ # Huh. We know that a ReportPrinter prints reports, but that's^^J
-		\ \ \ \ # more than we actually should know ...^^J
-		\ \ end^^J
-		end^^J
-		\end{lstlisting}
-	}
-	\onslide*{4}{
-		Test:
-		\begin{lstlisting}[frame=shadowbox]^^J
-		require 'spec_helper'^^J
-		^^J
-		describe TitanClass do^^J
-		\ \ it "should do everything" do^^J
-		\ \ \ \ source = double(Source)^^J
-		\ \ \ \ gatherer = double(Gatherer)^^J
-		\ \ \ \ args = \{external_sources: [source], data_gatherers: [gatherer]\}^^J
-		\ \ \ \ processed = double("ProcessedData")^^J
-		\ \ \ \ subject.should_receive(process_data).with(gatherer).and_return(processed)^^J
-		\ \ \ \ # Yikes, a stub on the subject under test!^^J
-		\ \ \ \ report = double(Report)^^J
-		\ \ \ \ Report.should_receive(:new).with(processed)and_return(report)^^J
-		\ \ \ \ # Stubbing ".new" is rarely a good idea^^J
-		\ \ \ \ ReportPrinter.should_receive(:print_all).with([report])^^J
-		\ \ \ \ # Huh. We know that a ReportPrinter prints reports, but that's^^J
-		\ \ \ \ # more than we actually should know ...^^J
+		\ \ \ \ # Huh. We know that a ReportPrinter prints reports,^^J
+		\ \ \ \ # but that's more than we actually should know ...^^J
+		\ \ \ \ subject.doIt(args)^^J
 		\ \ end^^J
 		end^^J
 		\end{lstlisting}
@@ -193,24 +138,137 @@
 	}
 
 \end{slide}
-\begin{slide}{One Test, One Assertion}
+\section{One Test, One Assertion}
+\begin{slide}{Example}
+	\begin{lstlisting}[frame=shadowbox]^^J
+	describe SmartClass do^^J
+	\ \ it "invokes the data gatherer" do^^J
+	\ \ \ \ data_gatherer = double(DataGatherer)^^J
+	\ \ \ \ source = double(Source)^^J
+	\ \ \ \ data_gatherer.should_receive(gather).with(source))^^J
+	\ \ \ \ # Our only assertion!^^J
+	\ \ \ \ subject.data_gatherer = data_gatherer # DI for the win^^J
+	\ \ \ \ subject.gather_from_source(source)^^J
+	\ \ end
+	end^^J
+	...^^J
+	class SmartClass^^J
+	^^J
+	\ \ attr_accessor :data_gatherer^^J
+	^^J
+	\ \ def gather_from_source(source)^^J
+	\ \ \ \ data_gatherer_gather(source)^^J
+	\ \ end^^J
+	end^^J
+	\end{lstlisting}
 \end{slide}
-\begin{slide}{Mocking and Stubbing}
+\section{Mocking and Stubbing}
+\begin{note}{Mocking, Stubbing}
+	\begin{itemize}
+		\item Mocks are not stubs
+		\item Use them instead of doing expensive things
+		\item Use whenever not referring to the SUT
+		\item NEVER use when referring to the SUT
+	\end{itemize}
+\end{note}
+\section{Testing Modules}
+\begin{slide}{Example}
+	\begin{lstlisting}[frame=shadowbox]^^J
+	class TestSmartModule^^J
+	\ \ include SmartModule^^J
+	end^^J
+	describe SmartModule do^^J
+	\ \ subject \{ TestSmartModule.new \}^^J
+	\ \ it "does something" do^^J
+	\ \ \ \ subject.something.should ...^^J
+	\ \ end^^J
+	end^^J
+	\end{lstlisting}
 \end{slide}
-\begin{slide}{Testing Modules}
-\end{slide}
-\begin{slide}{Testing IO}
-\end{slide}
+\begin{note}{Testing Modules}
+	\begin{itemize}
+		\item Easy: make a dummy class and include the module
+		\item USE subject!
+		\item CAVEAT: don't use 'DummyClass' everywhere - there will be constant bleeding
+	\end{itemize}
+\end{note}
+\section{Testing IO}
+\begin{note}{Testing Modules}
+	\begin{itemize}
+		\item Mention MockFS, FakeFS
+		\item Wrapper and/or stubbing better.
+		\item DI even better.
+	\end{itemize}
+\end{note}
 \section{Well, Rails}
-\begin{slide}{Anonymous Controllers}
+\section{Anonymous Controllers}
+\begin{note}{Anonymous Controllers}
+	Test functionality for all or many controllers \\
+	that has been added via inheritance (e.g. ApplicationController)
+\end{note}
+\begin{slide}{Example}
+	\begin{lstlisting}[frame=shadowbox]^^J
+	describe SomeClass, type: 'controller' do^^J
+	\ \ controller(ApplicationControllerOrSubClass) do^^J
+	\ \ \ \ def index^^J
+	\ \ \ \ \ \ ... # do something^^J
+	\ \ \ \ end^^J
+	\ \ end^^J
+	\ \ ^^J
+	\ \ it "makes something happen" do^^J
+	\ \ \ \ ...  # assert something happens^^J
+	\ \ \ \ get :index^^J
+	\ \ end^^J
+	end^^J
+	\end{lstlisting}
 \end{slide}
-\begin{slide}{Testing Models?}
-\end{slide}
-\begin{slide}{Another Layer}
-\end{slide}
+\section{Testing Models?}
+\begin{note}{Testing Models}
+	\begin{itemize}
+		\item Make sure that you don't use Fixtures or Real Database\texttrademark\  access
+		\item Don't test for properties/columns, maybe validations and transformation methods, 
+		\item but ... see next
+	\end{itemize}
+\end{note}
+\section{Another Layer}
+\begin{note}{Another Layer}
+	\begin{itemize}
+		\item Omakase vs. Prime (thanks @steveklabnik)
+		\item Draper, Objects On Rails, ...
+	\end{itemize}
+\end{note}
 \section{TDD}
-\begin{slide}{How To?}
-\end{slide}
-\begin{slide}{Advantages}
+\begin{note}{TDD}
+	\begin{itemize}
+		\item It's hard.
+		\item It's an art.
+		\item It's an acquired taste.
+		\item Leads to better design decisions
+		\item Keeps coverage high (enough)
+		\item Makes sure tests are fast
+		\item can be done multi-layered
+	\end{itemize}
+\end{note}
+\section{ Frameworks }
+\section{ MiniTest or RSpec? }
+\section{ That's all, folks. }
+\begin{slide}{Thanks}
+	\begin{itemize}
+		\item Stephan Kämper
+		\item Lisa Crispin
+		\item Elisabeth Hendricks
+		\item Michael Bolton
+		\item Avdi Grimm
+		\item Steve Klabnik
+		\item Jeremy Evans
+		\item Martin Gamsjäger
+		\item Robert C. Martin (Uncle Bob)
+		\item Andreas Kopecky
+		\item Jürgen Strobel
+		\item Andreas Tiefenthaler
+		\item Michael Kohl
+		\item Floor Drees
+		\item Friends and colleagues that inspired me
+	\end{itemize}
 \end{slide}
 \end{document}
