@@ -1,0 +1,63 @@
+[file]
+talk.pdf
+[notes]
+### 2
+- Ruby Developer
+- XP Enthusiast
+- Senior Developer at RadarServices
+- Almost 2 centuries of experience
+- Programming Lang Agnostic
+- Like Ruby
+- Trying to convince people that automated Testing is a good thing since early 2000s
+### 3
+- QUESTIONS:
+  - Who tests?
+  - Who does test automation?
+  - TDD?
+  - CI/CD?
+- Differences between Unit and Integration Testing
+- Explain Test Automation and CI/CD
+### 4
+- Ruby is more than Rails
+- Testing should be done anyways
+- Challenges: FS, IO, visuals
+- Can use RSpec, Minitest, ....
+- Examples use RSpec
+- Rules:
+   = One Method - one purpose
+   = One Test - one assertion
+### 10
+Mocks are not stubs
+Use instead of expensive things (fixtures)
+Use when not referring to SUT
+NEVER use when referring to SUT
+### 11
+Easy: make dummy class, include module
+Use subject {}
+CAVEAT: don't use 'DummyClass' everywhere, there will be constant bleeding
+### 13
+MockFS, FakeFS
+Wrappers and stubbing better
+DI even better
+### 15
+Tests for functionality that has been added 
+via inheritance
+### 17
+Controversial
+Don't use expensive DB setups or Fixtures/Factories
+Don't test properties or the ORM
+Maybe test validations/transformations
+
+... see next slide
+### 18
+Omakase vs Prime
+Draper, Objects on Rails
+Confusion about 'presenter'
+### 19
+It's hard.
+It's an art.
+It's an acquired taste.
+Leads to better design decisions
+Keeps coverage high (enough)
+Makes sure tests are fast
+Can be done multi-layered
