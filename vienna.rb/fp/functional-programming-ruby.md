@@ -163,6 +163,128 @@ Roll your own scan (prefix-sum):
 	cube.(6) # => 216
 
 ---
+#Practical Application
+---
+#The Bad: Tests for class methods
+
+Typical pattern:
+
+	!ruby
+    # in some_controller.rb
+	class SomeController < ApplicationController::Base
+	  def show
+	    @something = Something.find(params[:id])
+		# ...
+	  end
+	end
+
+The test:
+
+    !ruby
+	# in some_controller_spec.rb
+	describe SomeController do
+	  context "GET show" do
+	  let(:something) { mock_model(Something).as_null_object }
+	    it "should assign something as @something" do
+		  Something.should_receive(:find).with(1).and_return(something)
+		  # ^^^ Yuck. That's expensive and spins out of control
+		  get :show, id: 1
+		end
+	  end
+	end
+
+---
+#The Ugly: Use Controller Methods
+
+Controller:
+
+	!ruby
+	# in some_controller.rb
+	class SomeController < ApplicationController::Base
+	  before_filter :set_object, only: [:show]
+	  def set_object
+		@object = Something.find(params[:id])
+	  end
+
+	  def show
+	    ...
+	  end
+	end
+
+Test:
+
+	!ruby
+	describe SomeController do
+	  context "GET show" do
+	    let(:something) { mock_model(Something).as_null_object }
+	    it "should work" do
+		  # controller.should_receive(set_object)
+		  # Waiit, that doesn't work!
+		  # controller.instance_variable_set(:@object, something)
+		  # ^^^ Dont' even go there
+		  Something.should_receive( # ... you know how it goes
+		end
+	  end
+	end
+
+---
+#The Elegant: Inject the finder
+
+Controller:
+
+	!ruby
+	class SomeController < ApplicationController::Base
+	  attr_accessor :object_finder
+	  prepend_before_filter :setup
+	  def initialize
+		super
+	    @object_finder = Something.method(:find) # Pure Magic
+	  end
+	  def show
+	    object_finder.(params[:id])
+		# ...
+	  end
+	end
+
+Test:
+
+	!ruby
+	describe SomeController do
+	  context "GET show" do
+	    let (:something) { mock_model(Something).as_null_object }
+		let (:something_finder) {
+			->(id) { something.id = id; something } # lambda!
+		}
+		it "should work" do
+		  controller.object_finder = something_finder
+		  get :show, id: 1
+		  response.should be_success
+		end
+	  end
+	end
+---
+# More ideas?
+
+##Use as Kind of an Application Factory
+
+For example:
+
+   - A class that gets instantiated at boot time that does dispatching
+   - A registry for decorators et al
+   - Also: Chaining of finder and decorator methods
+   - ... ?
+---
 #What's missing?
+---
+#Tail Call Optimisation (TCO)
+
+##Can be enabled
+
+	!ruby
+	RubyVM::InstructionSequence.compile_option = {
+	  :tailcall_optimization => true,
+	  :trace_instruction => false,
+	}
+
 ---
 #Practical Usage
