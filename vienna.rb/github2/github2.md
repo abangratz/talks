@@ -17,8 +17,12 @@ What has that to do with the price of the fish?
 #Presenter Notes
 At the beginning, there was git
 
+Then came a few guys
+
+Programming Rails
+
 ---
-#Version Control System
+#Version Control / Source Code Management System
 #Presenter Notes
 What's that good for?
 
@@ -31,28 +35,6 @@ Always. Unless it's punch cards.
 #Source Code are Text Files
 #Presenter Notes
 Let's agree on that.
-
----
-#Examples
-
-Ruby:
-
-    !ruby
-    puts "hello world"
-
-Python:
-
-    !python
-    print("Hello World!")
-
-Java:
-
-    !java
-    ...
-
-    public static int main() {
-        ...
-    }
 
 ---
 #Structure of a rails app
@@ -163,8 +145,10 @@ e.g. my blog, vienna-rb.at
 ---
 #Me
 
-##https://github.com/abangratz
-##https://abangratz.github.io/
+## https://github.com/abangratz
+## https://abangratz.github.io/
+## anton.bangratz@radarservices.com
+## twitter: @tony_xpro
 
 ---
 #THANKS
