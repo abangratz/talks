@@ -12,7 +12,7 @@ Personal Account
 
 ## https://github.com/abangratz
 ## https://abangratz.github.io/
-## anton.bangratz@radarservices.com
+## anton.bangratz@gmail.com
 ## twitter: @tony_xpro
 #Presenter Notes
 
@@ -25,6 +25,10 @@ ATM: DBA, still using Rails
 #Presenter Notes
 
 it's good for teaching, why should it be bad elsewise?
+
+Don't worry about remembering everything, some things will come up in the future.
+
+"Oh, I heard about that!"
 
 ---
 #Forbes: Best Paid Job
@@ -57,6 +61,12 @@ consistent interface, i18n, integration of multiple frontends
 #Presenter Notes
 
 event platform, user generated content, separate administration interface
+
+---
+#Falter
+#Presenter Notes
+
+Data migrations, data transfer, internal and external APIs, Database migrations ...
 
 ---
 #Critical Failure
@@ -142,7 +152,7 @@ radarservices anecdote (mongodb -> datamapper -> sequel (+ elasticsearch))
 
 faster than even sinatra etc -> missing infrastructure
 
-flexibility: haml, coffeescript, ...
+flexibility: haml, coffeescript, rails-api, ...
 
 interfacing is (usually) pretty easy
 
@@ -153,6 +163,16 @@ interfacing is (usually) pretty easy
 capistrano, codeship, jenkins, rpm, docker ...
 
 interoperability: bower, heroku, ...
+
+---
+#Currently
+#Presenter Notes
+
+DBA @ Weekly Newspaper, APIs, Data Exchange
+
+Interface for Elastic Search, PostgreSQL
+
+Data transformation
 
 ---
 #How?
