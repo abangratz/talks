@@ -26,6 +26,8 @@ ATM: DBA, still using Rails
 
 it's good for teaching, why should it be bad elsewise?
 
+The community is great for discovering, but for solving?
+
 Don't worry about remembering everything, some things will come up in the future.
 
 "Oh, I heard about that!"
